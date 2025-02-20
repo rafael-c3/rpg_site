@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .container {
+            width: 45%;
+        }
+        .aliados {
+            border-left: 5px solid green;
+            padding-left: 10px;
+        }
+        .inimigos {
+            border-right: 5px solid red;
+            padding-right: 10px;
+        }
+        .personagem {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        img {
+            max-width: 100px;
+            display: block;
+        }
+        .botao-adicionar {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .botao-adicionar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .botao-adicionar button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão para adicionar personagem -->
+    <div class="botao-adicionar">
+        <a href="{% url 'escolher_personagem' %}">
+            <button>Adicionar Personagem</button>
+        </a>
+        <a href="{% url 'limpar_personagens' %}">
+            <button style="background-color: #dc3545;">Limpar Personagens</button>
+        </a>
+    </div>
+
+<!-- Aliados (lado esquerdo) -->
+<div class="container aliados">
+    <h2>Aliados</h2>
+    {% if aliados %}
+        {% for personagem in aliados %}
+            <div class="personagem">
+                <h3>{{ personagem.nome }}</h3>
+                <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
+                <p><strong>PV:</strong> {{ personagem.pv }}</p>
+                <p><strong>Força:</strong> {{ personagem.forca }}</p>
+                <p><strong>Magia:</strong> {{ personagem.magia }}</p>
+                <p><strong>Resistência:</strong> {{ personagem.resistencia }}</p>
+                <p><strong>Agilidade:</strong> {{ personagem.agilidade }}</p>
+                <p><strong>Sorte:</strong> {{ personagem.sorte }}</p>
+                <p><strong>Defesa:</strong> {{ personagem.defesa }} (Armadura: {{ personagem.armadura }})</p>
+                {% if personagem.foto %}
+                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
+                {% else %}
+                    <p>Sem foto</p>
+                {% endif %}
+                <!-- Botão para remover o personagem -->
+                <a href="{% url 'remover_personagem' personagem.id %}">
+                    <button style="background-color: #dc3545; margin-top: 10px;">Remover</button>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum aliado cadastrado.</p>
+    {% endif %}
+</div>
+
+<!-- Inimigos (lado direito) -->
+<div class="container inimigos">
+    <h2>Inimigos</h2>
+    {% if inimigos %}
+        {% for personagem in inimigos %}
+            <div class="personagem">
+                <h3>{{ personagem.nome }}</h3>
+                <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
+                <p><strong>PV:</strong> {{ personagem.pv }}</p>
+                <p><strong>Força:</strong> {{ personagem.forca }}</p>
+                <p><strong>Magia:</strong> {{ personagem.magia }}</p>
+                <p><strong>Resistência:</strong> {{ personagem.resistencia }}</p>
+                <p><strong>Agilidade:</strong> {{ personagem.agilidade }}</p>
+                <p><strong>Sorte:</strong> {{ personagem.sorte }}</p>
+                <p><strong>Defesa:</strong> {{ personagem.defesa }} (Armadura: {{ personagem.armadura }})</p>
+                {% if personagem.foto %}
+                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
+                {% else %}
+                    <p>Sem foto</p>
+                {% endif %}
+                <!-- Botão para remover o personagem -->
+                <a href="{% url 'remover_personagem' personagem.id %}">
+                    <button style="background-color: #dc3545; margin-top: 10px;">Remover</button>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum inimigo cadastrado.</p>
+    {% endif %}
+</div>
+</body>
+</html>

@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import listar_personagens, adicionar_personagem
+from . import views
 
 urlpatterns = [
-    path('', listar_personagens, name='listar_personagens'),  # Página inicial
-    path('adicionar/', adicionar_personagem, name='adicionar_personagem'),
+    path('', views.home, name='home'),
+    path('escolher/', views.escolher_personagem, name='escolher_personagem'),
+    path('exibir/<int:personagem_id>/', views.exibir_personagem, name='exibir_personagem'),
+    path('limpar/', views.limpar_personagens, name='limpar_personagens'),  # Nova URL
+    path('remover/<int:personagem_id>/', views.remover_personagem, name='remover_personagem'),
 ]
