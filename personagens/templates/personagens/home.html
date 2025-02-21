@@ -81,6 +81,14 @@ img {
     margin: 0 auto;
 }
 
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.personagem.removendo {
+    animation: fadeOut 0.5s ease forwards;
+}
     </style>
 </head>
 <body>
@@ -329,10 +337,12 @@ img {
 
         // Verifica se o PV atingiu 0
         if (atributo === 'pv' && valorAtual <= 0) {
-            // Remove o personagem da exibição
             const personagemElement = document.getElementById(`personagem-${personagemId}`);
             if (personagemElement) {
-                personagemElement.remove();
+                personagemElement.classList.add('removendo');
+                setTimeout(() => {
+                    personagemElement.remove();
+                }, 500);  // Remove após a animação
             }
         }
     }
