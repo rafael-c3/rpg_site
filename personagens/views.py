@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Personagem
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+
 
 def home(request):
     # Recupera os IDs dos Aliados e Inimigos da sessão
@@ -89,3 +93,21 @@ def atualizar_atributo(request, personagem_id, atributo):
         personagem.save()
     
     return redirect('home')
+
+@csrf_exempt
+def atualizar_atributo(request, personagem_id, atributo):
+    if request.method == 'POST':
+        try:
+            personagem = Personagem.objects.get(id=personagem_id)
+            valor = float(request.POST.get('valor'))
+
+            # Atualiza o atributo no banco de dados
+            if hasattr(personagem, atributo):
+                setattr(personagem, atributo, valor)
+                personagem.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'error': 'Atributo inválido.'})
+        except Personagem.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Personagem não encontrado.'})
+    return JsonResponse({'success': False, 'error': 'Método não permitido.'})

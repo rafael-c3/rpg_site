@@ -91,9 +91,12 @@ h2 {
 
 
 img {
-    max-width: 100px;
-    display: block;
-    margin: 0 auto;
+    border-radius: 50%; /* Tornando a imagem redonda */
+    width: 100px; /* Ajuste o tamanho da imagem conforme necessário */
+    height: 100px; /* Mantenha a altura igual à largura para garantir que a imagem seja perfeitamente redonda */
+    object-fit: cover; /* Garante que a imagem se ajuste ao círculo sem distorção */
+    display: block; /* Remove o espaçamento abaixo da imagem */
+    margin: 0 auto; /* Centraliza a imagem se necessário */
 }
 
 @keyframes fadeOut {
@@ -129,6 +132,12 @@ img {
                 <h3>{{ personagem.nome }}</h3>
                 <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
             
+                    <!-- Exibir a foto do personagem -->
+                    {% if personagem.foto %}
+                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
+                {% else %}
+                    <p>Sem foto</p>
+                {% endif %}
                 <!-- PV -->
                 <p>
                     <strong>PV:</strong>
@@ -149,7 +158,7 @@ img {
             
                 <!-- Armadura -->
                 <p>
-                    <strong>Armadura:</strong>
+                    <strong>Armour:</strong>
                     <span id="armadura-modificado-{{ personagem.id }}">{{ personagem.armadura|floatformat:"-2" }}</span>
                     <input type="number" step="0.01" min="0" id="armadura-input-{{ personagem.id }}" style="width: 50px;">
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'armadura', 'aumentar')">+</button>
@@ -176,7 +185,7 @@ img {
             
                 <!-- Resistência -->
                 <p>
-                    <strong>Resistência:</strong>
+                    <strong>Resist:</strong>
                     <span id="resistencia-modificado-{{ personagem.id }}">{{ personagem.resistencia|floatformat:"-2" }}</span>
                     <input type="number" step="0.01" min="0" id="resistencia-input-{{ personagem.id }}" style="width: 50px;">
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'resistencia', 'aumentar')">+</button>
@@ -200,13 +209,6 @@ img {
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'aumentar')">+</button>
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'diminuir')">-</button>
                 </p>
-            
-                <!-- Exibir a foto do personagem -->
-                {% if personagem.foto %}
-                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
-                {% else %}
-                    <p>Sem foto</p>
-                {% endif %}
             
                 <!-- Botão para remover o personagem -->
                 <a href="{% url 'remover_personagem' personagem.id %}">
@@ -232,6 +234,12 @@ img {
                 <h3>{{ personagem.nome }}</h3>
                 <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
             
+                    <!-- Exibir a foto do personagem -->
+                    {% if personagem.foto %}
+                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
+                {% else %}
+                    <p>Sem foto</p>
+                {% endif %}
                 <!-- PV -->
                 <p>
                     <strong>PV:</strong>
@@ -252,7 +260,7 @@ img {
             
                 <!-- Armadura -->
                 <p>
-                    <strong>Armadura:</strong>
+                    <strong>Armour:</strong>
                     <span id="armadura-modificado-{{ personagem.id }}">{{ personagem.armadura|floatformat:"-2" }}</span>
                     <input type="number" step="0.01" min="0" id="armadura-input-{{ personagem.id }}" style="width: 50px;">
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'armadura', 'aumentar')">+</button>
@@ -279,7 +287,7 @@ img {
             
                 <!-- Resistência -->
                 <p>
-                    <strong>Resistência:</strong>
+                    <strong>Resist:</strong>
                     <span id="resistencia-modificado-{{ personagem.id }}">{{ personagem.resistencia|floatformat:"-2" }}</span>
                     <input type="number" step="0.01" min="0" id="resistencia-input-{{ personagem.id }}" style="width: 50px;">
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'resistencia', 'aumentar')">+</button>
@@ -303,13 +311,6 @@ img {
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'aumentar')">+</button>
                     <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'diminuir')">-</button>
                 </p>
-
-                <!-- Exibir a foto do personagem -->
-                {% if personagem.foto %}
-                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
-                {% else %}
-                    <p>Sem foto</p>
-                {% endif %}
             
                 <!-- Botão para remover o personagem -->
                 <a href="{% url 'remover_personagem' personagem.id %}">
