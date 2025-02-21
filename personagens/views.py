@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import Personagem
 
 def home(request):
@@ -67,5 +68,24 @@ def remover_personagem(request, personagem_id):
     # Atualiza a sessão com as novas listas de IDs
     request.session['aliados'] = aliados_ids
     request.session['inimigos'] = inimigos_ids
+    
+    return redirect('home')
+
+def atualizar_atributo(request, personagem_id, atributo):
+    # Recupera o personagem
+    personagem = get_object_or_404(Personagem, id=personagem_id)
+    
+    # Recupera o valor e a ação (aumentar ou diminuir)
+    valor = int(request.POST.get('valor'))
+    acao = request.POST.get('acao')
+    
+    # Atualiza o atributo
+    if atributo in ['pv', 'forca', 'magia', 'resistencia', 'agilidade', 'sorte', 'defesa']:
+        atributo_atual = getattr(personagem, atributo)
+        if acao == 'aumentar':
+            setattr(personagem, atributo, atributo_atual + valor)
+        elif acao == 'diminuir':
+            setattr(personagem, atributo, max(0, atributo_atual - valor))  # Garante que o valor não seja negativo
+        personagem.save()
     
     return redirect('home')
