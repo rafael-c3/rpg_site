@@ -5,49 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .container {
-            width: 45%;
-        }
-        .aliados {
-            border-left: 5px solid green;
-            padding-left: 10px;
-        }
-        .inimigos {
-            border-right: 5px solid red;
-            padding-right: 10px;
-        }
-        .personagem {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        img {
-            max-width: 100px;
-            display: block;
-        }
-        .botao-adicionar {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .botao-adicionar button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .botao-adicionar button:hover {
-            background-color: #0056b3;
-        }
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.botao-adicionar {
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.botao-adicionar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.botao-adicionar button:hover {
+    background-color: #0056b3;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.container {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container h2 {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.aliados, .inimigos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.personagem {
+    flex: 1 1 calc(33.33% - 10px);
+    max-width: calc(33.33% - 10px);
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    min-width: 150px;
+}
+
+img {
+    max-width: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
     </style>
 </head>
 <body>
@@ -62,110 +95,112 @@
     </div>
 
 <!-- Aliados (lado esquerdo) -->
-<div class="container aliados">
-    <h2>Aliados</h2>
-    {% if aliados %}
-        {% for personagem in aliados %}
-        <div class="personagem">
-            <h3>{{ personagem.nome }}</h3>
-            <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
-        
-            <!-- PV -->
-            <p>
-                <strong>PV:</strong>
-                <span id="pv-modificado-{{ personagem.id }}">{{ personagem.pv }}</span>
-                <input type="number" min="0" id="pv-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'pv', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'pv', 'diminuir')">-</button>
-            </p>
+<div class="flex-container">
+    <div class="container aliados">
+        <h2>Aliados</h2>
+        {% if aliados %}
+            {% for personagem in aliados %}
+            <div class="personagem" id="personagem-{{ personagem.id }}">
+                <h3>{{ personagem.nome }}</h3>
+                <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
+            
+                <!-- PV -->
+                <p>
+                    <strong>PV:</strong>
+                    <span id="pv-modificado-{{ personagem.id }}">{{ personagem.pv }}</span>
+                    <input type="number" min="0" id="pv-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'pv', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'pv', 'diminuir')">-</button>
+                </p>
 
-            <!-- Defesa -->
-            <p>
-                <strong>Defesa:</strong>
-                <span id="defesa-modificado-{{ personagem.id }}">{{ personagem.defesa }}</span>
-                <input type="number" min="0" id="defesa-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'defesa', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'defesa', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Armadura -->
-            <p>
-                <strong>Armadura:</strong>
-                <span id="armadura-modificado-{{ personagem.id }}">{{ personagem.armadura }}</span>
-                <input type="number" min="0" id="armadura-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'armadura', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'armadura', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Força -->
-            <p>
-                <strong>Força:</strong>
-                <span id="forca-modificado-{{ personagem.id }}">{{ personagem.forca }}</span>
-                <input type="number" min="0" id="forca-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'forca', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'forca', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Magia -->
-            <p>
-                <strong>Magia:</strong>
-                <span id="magia-modificado-{{ personagem.id }}">{{ personagem.magia }}</span>
-                <input type="number" min="0" id="magia-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'magia', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'magia', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Resistência -->
-            <p>
-                <strong>Resistência:</strong>
-                <span id="resistencia-modificado-{{ personagem.id }}">{{ personagem.resistencia }}</span>
-                <input type="number" min="0" id="resistencia-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'resistencia', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'resistencia', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Agilidade -->
-            <p>
-                <strong>Agilidade:</strong>
-                <span id="agilidade-modificado-{{ personagem.id }}">{{ personagem.agilidade }}</span>
-                <input type="number" min="0" id="agilidade-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'agilidade', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'agilidade', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Sorte -->
-            <p>
-                <strong>Sorte:</strong>
-                <span id="sorte-modificado-{{ personagem.id }}">{{ personagem.sorte }}</span>
-                <input type="number" min="0" id="sorte-input-{{ personagem.id }}" style="width: 50px;">
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'aumentar')">+</button>
-                <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'diminuir')">-</button>
-            </p>
-        
-            <!-- Exibir a foto do personagem -->
-            {% if personagem.foto %}
-                <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
-            {% else %}
-                <p>Sem foto</p>
-            {% endif %}
-        
-            <!-- Botão para remover o personagem -->
-            <a href="{% url 'remover_personagem' personagem.id %}">
-                <button style="background-color: #dc3545; margin-top: 10px;">Remover</button>
-            </a>
-        </div>
-        {% endfor %}
-    {% else %}
-        <p>Nenhum aliado cadastrado.</p>
-    {% endif %}
-</div>
+                <!-- Defesa -->
+                <p>
+                    <strong>Defesa:</strong>
+                    <span id="defesa-modificado-{{ personagem.id }}">{{ personagem.defesa }}</span>
+                    <input type="number" min="0" id="defesa-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'defesa', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'defesa', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Armadura -->
+                <p>
+                    <strong>Armadura:</strong>
+                    <span id="armadura-modificado-{{ personagem.id }}">{{ personagem.armadura }}</span>
+                    <input type="number" min="0" id="armadura-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'armadura', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'armadura', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Força -->
+                <p>
+                    <strong>Força:</strong>
+                    <span id="forca-modificado-{{ personagem.id }}">{{ personagem.forca }}</span>
+                    <input type="number" min="0" id="forca-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'forca', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'forca', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Magia -->
+                <p>
+                    <strong>Magia:</strong>
+                    <span id="magia-modificado-{{ personagem.id }}">{{ personagem.magia }}</span>
+                    <input type="number" min="0" id="magia-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'magia', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'magia', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Resistência -->
+                <p>
+                    <strong>Resistência:</strong>
+                    <span id="resistencia-modificado-{{ personagem.id }}">{{ personagem.resistencia }}</span>
+                    <input type="number" min="0" id="resistencia-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'resistencia', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'resistencia', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Agilidade -->
+                <p>
+                    <strong>Agilidade:</strong>
+                    <span id="agilidade-modificado-{{ personagem.id }}">{{ personagem.agilidade }}</span>
+                    <input type="number" min="0" id="agilidade-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'agilidade', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'agilidade', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Sorte -->
+                <p>
+                    <strong>Sorte:</strong>
+                    <span id="sorte-modificado-{{ personagem.id }}">{{ personagem.sorte }}</span>
+                    <input type="number" min="0" id="sorte-input-{{ personagem.id }}" style="width: 50px;">
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'aumentar')">+</button>
+                    <button onclick="atualizarAtributo({{ personagem.id }}, 'sorte', 'diminuir')">-</button>
+                </p>
+            
+                <!-- Exibir a foto do personagem -->
+                {% if personagem.foto %}
+                    <img src="{{ personagem.foto.url }}" alt="{{ personagem.nome }}">
+                {% else %}
+                    <p>Sem foto</p>
+                {% endif %}
+            
+                <!-- Botão para remover o personagem -->
+                <a href="{% url 'remover_personagem' personagem.id %}">
+                    <button style="background-color: #dc3545; margin-top: 10px;">Remover</button>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum aliado cadastrado.</p>
+        {% endif %}
+    </div>
+    
 
 <!-- Inimigos (lado direito) -->
 <div class="container inimigos">
     <h2>Inimigos</h2>
     {% if inimigos %}
         {% for personagem in inimigos %}
-        <div class="personagem">
+        <div class="personagem" id="personagem-{{ personagem.id }}">
             <h3>{{ personagem.nome }}</h3>
             <p><strong>Tipo:</strong> {{ personagem.tipo }}</p>
         
@@ -258,23 +293,24 @@
         <p>Nenhum inimigo cadastrado.</p>
     {% endif %}
 </div>
+</div>
 <script>
     // Função para atualizar atributos
     function atualizarAtributo(personagemId, atributo, acao) {
         // Encontra o campo de entrada de valor
         const input = document.getElementById(`${atributo}-input-${personagemId}`);
-        const valor = parseInt(input.value);
+        const valor = parseFloat(input.value);
 
         // Encontra o elemento que exibe o valor modificado
         const modificadoElement = document.getElementById(`${atributo}-modificado-${personagemId}`);
 
         // Atualiza o valor modificado
-        let valorAtual = parseInt(modificadoElement.textContent);
+        let valorAtual = parseFloat(modificadoElement.textContent);
 
         if (atributo === 'pv' && acao === 'diminuir') {
             // Se o atributo for PV e a ação for diminuir, aplica a redução da resistência
             const resistenciaElement = document.getElementById(`resistencia-modificado-${personagemId}`);
-            const resistencia = parseInt(resistenciaElement.textContent);
+            const resistencia = parseFloat(resistenciaElement.textContent);
 
             // Calcula o dano reduzido
             const danoReduzido = Math.max(0, valor - resistencia);
@@ -289,7 +325,16 @@
         }
 
         // Atualiza o texto do valor modificado
-        modificadoElement.textContent = valorAtual;
+        modificadoElement.textContent = valorAtual.toFixed(1);  // Exibe o valor com 1 casa decimal
+
+        // Verifica se o PV atingiu 0
+        if (atributo === 'pv' && valorAtual <= 0) {
+            // Remove o personagem da exibição
+            const personagemElement = document.getElementById(`personagem-${personagemId}`);
+            if (personagemElement) {
+                personagemElement.remove();
+            }
+        }
     }
 </script>
 </body>
